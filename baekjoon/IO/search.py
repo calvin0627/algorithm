@@ -12,4 +12,4 @@ webbrowser.open(problem_url)
 if not os.path.isfile(f"{problem}.py"):
     with open(f"{problem}.py","w") as f:
         1
-
+os.system(f"code {problem}.py")
