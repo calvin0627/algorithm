@@ -7,3 +7,5 @@ else:
 problem_url="https://www.acmicpc.net/problem/"+problem
 webbrowser.open(problem_url)
 
+
+with open(f"{problem}.py","w")
