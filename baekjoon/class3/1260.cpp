@@ -1,73 +1,56 @@
-#include <iostream>
+#include <algorithm>
 #include <queue>
-#include <stack>
+#include <iostream>
+
 using namespace std;
-
-// void DFS_parser(int tree[][size],int branch, int size){
-//     for(int i=0;i<size;i++)
-//         if(tree[branch][i]){
-//             printf("%d ",i);
-//             DFS_parser(tree,i,size);
-//         }
-// }
-
-// void BFS_parser(int tree[][size], int level, int size){
-//     queue<int> q;
-
-//     for(int i=0;i<size;i++)
-//     for(int j=0;j<size;j++){
-//         if(tree[i][j]){
-//             printf("%d ",j);
-//             q.push(i);
-//         }
-//     }
-//     while(q){
-//         int tmp = q.front();
-//         q.pop();
-//         BFS_parser(tree, level+1, size);
-//     }
-// }
 #define MAX 1001
+
+int G[MAX][MAX];
+bool visited[MAX] = {0};
+int N, M, V;
+
+void parser_dfs(int node);
+void parser_bfs(int node);
+
 int main(){
-    ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
-    int N, M, V;
-    int x,y;
     cin >> N >> M >> V;
-    bool arr[MAX][MAX];
-    for(int i=0;i<M;i++){
-            cin >> x >> y;
-            arr[x][y] = 1;
+    int x,y;
+    for(int i =0;i<M;i++){
+        cin >> x >> y;
+        G[x][y] = G[y][x] = 1;
     }
-
-    // DFS_parser(arr,0,N);
-    cout << V << " ";
-    int count = M;
-    int node = V;
-    queue<int> q;
-    q.push(V);
-    while(!q.empty()){
-        int tmp = q.front(); q.pop();
-        for(int i=1;i<=N;i++){
-            if(arr[tmp][i]){
-                cout << i << " ";
-                q.push(i);
-            }
-        }
-    }
+    parser_dfs(V);
     cout << "\n";
-    stack<int> stck;
-    cout << V << " ";
-    stck.push(V);
-    while(!stck.empty()){
-        int tmp = stck.top(); 
-        stck.pop();
-        for(int i=1;i<=N;i++){
-            if(arr[tmp][i]){
-                cout << i << " ";
-                q.push(i);
-            }
-        }
-    }
-
+    parser_bfs(V);
     return 0;
 }
+
+void parser_dfs(int V){
+    cout << V << " ";
+    visited[V] = true;
+    for(int i=1;i<=N;i++){
+        if(visited[i] || G[V][i]==0)continue;
+        parser_dfs(i);
+    }
+}
+
+void parser_bfs(int V){
+    queue<int> q;
+    q.push(V);
+    visited[V]=0;
+    while(!q.empty()){
+        V = q.front();
+        q.pop();
+        cout << V << " ";
+        for(int i=1;i<=N;i++){
+            if(G[V][i]==0||visited[i]==0)continue;
+            q.push(i);
+            visited[i] = 0;
+        }
+    }
+}
+
+/*
+ * 그래프는 이차원 배열을 통해 표현하고, 재귀함수로 dfs, bfs parser를 구현
+ *  
+*/
